@@ -1,0 +1,29 @@
+# .github/workflows/deploy.yml
+name: CI/CD with GitHub Actions
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Build and Deploy
+      run: |
+        docker build -t nom-de-votre-image .
+        docker run -p 5000:5000 nom-de-votre-image
